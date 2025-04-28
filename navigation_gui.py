@@ -165,10 +165,29 @@ def calculate_route():
         result_text.insert(tk.END, f"❌ Error: {str(e)}")
         result_text.config(state='disabled')
 
-# GUI setup
+# --- New Code: Company Info Section ---
+def show_company_info():
+    company_window = tk.Toplevel(root)
+    company_window.title("Company Info")
+    company_window.geometry("400x350")
+    company_window.configure(bg='#1e1e1e')
+
+    title = tk.Label(company_window, text="🚀 PathFinderAI", font=("Helvetica", 16, "bold"), bg="#1e1e1e", fg="white")
+    title.pack(pady=10)
+
+    founders = tk.Label(company_window, text="Founders: Daylen Hall, Eric Cheeley, Ashari Joiner", font=("Segoe UI", 10), bg="#1e1e1e", fg="white")
+    founders.pack(pady=5)
+
+    year = tk.Label(company_window, text="Founded: 2025", font=("Segoe UI", 10), bg="#1e1e1e", fg="white")
+    year.pack(pady=5)
+
+    mission = tk.Label(company_window, text="Mission: To deliver optimized, fast, and reliable route planning for delivery operations.", font=("Segoe UI", 10), bg="#1e1e1e", fg="white", wraplength=350, justify="center")
+    mission.pack(pady=10)
+
+# --- GUI Setup ---
 root = tk.Tk()
 root.title("PathFinderAI - Delivery Route Planner")
-root.geometry("640x850")
+root.geometry("640x900")
 root.configure(bg='#1e1e1e')
 
 style = ttk.Style()
@@ -211,9 +230,12 @@ log_text.pack(side='left')
 clear_button = ttk.Button(log_frame, text="🧹 Clear History", command=clear_history)
 clear_button.pack(side='left', padx=10)
 
+# New Button for Company Info
+company_info_button = ttk.Button(root, text="🏢 Company Info", command=show_company_info)
+company_info_button.pack(pady=15)
+
 log_text.config(state='normal')
 log_text.insert(tk.END, load_delivery_log())
 log_text.config(state='disabled')
 
 root.mainloop()
-

@@ -42,7 +42,41 @@ def get_route_data(start, end):
     decoded_path = polyline.decode(overview_polyline)
     total_distance = directions[0]['legs'][0]['distance']['value']
     duration = directions[0]['legs'][0]['duration']['text']
-    return decoded_path, total_distance, duration
+
+    graph = defaultdict(list)
+    for step in steps:
+        start_loc = (step['start_location']['lat'], step['start_location']['lng'])
+        end_loc = (step['end_location']['lat'], step['end_location']['lng'])
+        distance = step['distance']['value']
+        graph[start_loc].append((end_loc, distance))
+
+    return graph, decoded_path, total_distance, duration
+
+def dijkstra(graph, start, end):
+    heap = [(0, start)]
+    distances = {start: 0}
+    previous = {}
+
+    while heap:
+        current_dist, current_node = heapq.heappop(heap)
+        if current_node == end:
+            break
+        for neighbor, weight in graph.get(current_node, []):
+            distance = current_dist + weight
+            if neighbor not in distances or distance < distances[neighbor]:
+                distances[neighbor] = distance
+                previous[neighbor] = current_node
+                heapq.heappush(heap, (distance, neighbor))
+
+    path = []
+    node = end
+    while node in previous:
+        path.insert(0, node)
+        node = previous[node]
+    if path:
+        path.insert(0, start)
+
+    return path, distances.get(end, float('inf'))
 
 def show_map(path_coords):
     m = folium.Map(location=path_coords[0], zoom_start=13)
@@ -89,11 +123,15 @@ def calculate_route():
     try:
         pickup_coords = geocode_address(pickup)
         delivery_coords = geocode_address(delivery)
-        path, total_distance, duration = get_route_data(pickup, delivery)
+        graph, full_path, total_distance_api, duration = get_route_data(pickup, delivery)
 
-        if path:
+        start_node = find_closest_node(pickup_coords, graph)
+        end_node = find_closest_node(delivery_coords, graph)
+        shortest_path, total_distance_dijkstra = dijkstra(graph, start_node, end_node)
+
+        if shortest_path:
             delivery_id = str(uuid.uuid4())[:8]
-            total_miles = total_distance * 0.000621371
+            total_miles = total_distance_dijkstra * 0.000621371
             result = (
                 f"\n✅ Route Found!\n"
                 f"📦 ID: {delivery_id}\n"
@@ -111,7 +149,7 @@ def calculate_route():
             with open("delivery_log.txt", "a") as f:
                 f.write(f"{delivery_id},{client},{driver},{pickup} -> {delivery},{total_miles:.2f} mi,{duration}\n")
 
-            show_map(path)
+            show_map(full_path)
             log_text.config(state='normal')
             log_text.delete(1.0, tk.END)
             log_text.insert(tk.END, load_delivery_log())
@@ -178,3 +216,4 @@ log_text.insert(tk.END, load_delivery_log())
 log_text.config(state='disabled')
 
 root.mainloop()
+

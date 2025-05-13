@@ -7,7 +7,7 @@ import uuid
 import webbrowser
 
 
-API_KEY = "AIzaSyDldf_k8iPX5zzpe68luqnpRPRog78RWXE"
+API_KEY = "YOUER API KEY"
 gmaps = googlemaps.Client(key=API_KEY)
 
 def geocode_address(address):

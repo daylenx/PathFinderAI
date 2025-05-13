@@ -10,7 +10,7 @@ import math
 import os
 import polyline
 
-API_KEY = "AIzaSyDldf_k8iPX5zzpe68luqnpRPRog78RWXE"
+API_KEY = "YOUR API KEY"
 gmaps = googlemaps.Client(key=API_KEY)
 
 def geocode_address(address):

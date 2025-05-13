@@ -31,13 +31,13 @@
 
 > **Note**: The primary script used for the complete project is `navigation_gui.py`. The rest of the files are either legacy code, output files, or documentation.
 
-NavigationSystem/
-│
-├── navigation_gui.py # ✅ Main and only required script. Includes GUI, route logic, Dijkstra’s, and logging.
-├── navigation_system.py # ❌ Legacy/experimental code, not used in final build.
-├── delivery_log.txt # 📝 Output file that stores delivery history once the app is run.
-├── route_map.html # 🌐 Auto-generated HTML file that displays the route on a map.
-└── README.md # 📘 This documentation file.
+- NavigationSystem/
+
+- navigation_gui.py # ✅ Main and only required script. Includes GUI, route logic, Dijkstra’s, and logging.
+- navigation_system.py # ❌ Legacy/experimental code, not used in final build.
+- delivery_log.txt # 📝 Output file that stores delivery history once the app is run.
+- route_map.html # 🌐 Auto-generated HTML file that displays the route on a map.
+- README.md # 📘 This documentation file.
 
 
 ---

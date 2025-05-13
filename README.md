@@ -80,11 +80,11 @@
 Install required packages:
 
 2. Install required package
-  pip install googlemaps folium polyline
+   `pip install googlemaps folium polyline`
 
 3. Add your Google Maps API key inside navigation_gui.py
 
 4. Run application
-   python navigation_gui.py
+   `python navigation_gui.py`
 
 
